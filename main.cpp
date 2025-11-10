@@ -1,11 +1,13 @@
 #include <iostream>
 #include <cmath>
+#include <iomanip>
 
 class Circle {
 // complete declaration for Circle class here
 private:
-    double m_radius;
+
 protected:
+    double m_radius;
     double m_area;
     void calcArea(double radius) {
             m_area = M_PI * pow(m_radius,2.0);
@@ -44,6 +46,10 @@ private:
         }
     }
 public:
+    Cylinder() {
+        m_height = 1.0;
+        m_volume = 1.0;
+    }
     Cylinder(double radius, double height) : Circle(radius) {
         if (height>0) {
             m_height = height;
@@ -60,14 +66,39 @@ public:
         std::cout << "and a height of " << m_height << " inches\n";
         std::cout << "has a volume of " << m_volume << " cubic inches.\n";
     }
+    // override a + operator
+    Cylinder operator+(Cylinder &Right) {
+        Cylinder temp;
+        // code to implement the addition of two cylinders
+        temp.m_radius = this->m_radius + Right.m_radius;
+        temp.calcArea(temp.m_radius);
+        temp.m_volume = this->m_volume + Right.m_volume;
+        temp.m_height = temp.m_volume / temp.m_area;
+        return temp;
+    }
 };
 
 int main() {
-    Circle c1, c2(5);
+    double a(2.5), b(1.25);
+    double c = a + b;
+    std::cout << "Sum " << c << "\n";
+
+    Cylinder cylA(  3.125, 10.5);
+    cylA.display();
+    Cylinder cylB( 4.5, 2.125);
+    cylB.display();
+    // cylC = cylA.+(cylB)
+    Cylinder cylC = cylA + cylB;
+    cylC.display();
+    //std::cout << "Sum " << cylC << "\n";
+
+
+    /*Circle c1, c2(5);
     c1.display();
     c2.display();
     Circle *cl1 = new Cylinder(3.5,8.65);
     cl1->display();
+    delete cl1;*/
 
     return 0;
 }
